@@ -40,10 +40,11 @@ def summarize_url(inp: SummarizeIn):
     try:
         max_chars = int(os.getenv("MAX_INPUT_CHARS", "50000"))
         text = parse(str(inp.url), max_chars=max_chars)
-        summary = summarize(text)
-        return {"source": str(inp.url), "chars": len(text), "summary": summary}
+        data = summarize(text)
+        return {"source": str(inp.url), "chars": len(text), "summary": data}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 
 
