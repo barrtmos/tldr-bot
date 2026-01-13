@@ -2,204 +2,65 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Mi Summarizer</title>
-  <style>
-    :root{
-      --bg0:#070A12;
-      --bg1:#0B1020;
-      --card:rgba(255,255,255,.06);
-      --card2:rgba(255,255,255,.04);
-      --text:rgba(255,255,255,.88);
-      --muted:rgba(255,255,255,.62);
-      --border:rgba(255,255,255,.12);
-      --accent:#7C3AED; /* фиолетовый неон */
-      --accent2:#22D3EE; /* циан */
-      --shadow: 0 10px 40px rgba(0,0,0,.55);
-      --radius: 18px;
-    }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-      background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,.20), transparent 60%),
-        radial-gradient(900px 500px at 90% 30%, rgba(34,211,238,.14), transparent 55%),
-        radial-gradient(900px 700px at 40% 90%, rgba(124,58,237,.12), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      min-height:100vh;
-    }
-
-    .wrap{max-width:980px;margin:56px auto;padding:0 18px}
-    .top{
-      display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px
-    }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:42px;height:42px;border-radius:14px;
-      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.75));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 10px 28px rgba(124,58,237,.22);
-      position:relative; overflow:hidden;
-    }
-    .logo:after{
-      content:""; position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 45%);
-      transform: rotate(20deg);
-    }
-    h1{font-size:22px;margin:0;letter-spacing:.2px}
-    .sub{margin:0;color:var(--muted);font-size:14px}
-
-    .panel{
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:18px;
-      backdrop-filter: blur(10px);
-    }
-
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .input{
-      flex:1 1 520px;
-      background: rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 14px;
-      padding:14px 14px;
-      color:var(--text);
-      font-size:16px;
-      outline:none;
-    }
-    .input:focus{
-      border-color: rgba(124,58,237,.55);
-      box-shadow: 0 0 0 4px rgba(124,58,237,.18);
-    }
-
-    .btn{
-      flex:0 0 auto;
-      padding:14px 16px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.55));
-      color:white;
-      font-weight:650;
-      cursor:pointer;
-      transition: transform .08s ease, filter .12s ease;
-      user-select:none;
-    }
-    .btn:hover{filter:brightness(1.05)}
-    .btn:active{transform:translateY(1px)}
-    .hint{margin-top:10px;color:var(--muted);font-size:13px}
-
-    .out{
-      margin-top:16px;
-      border-radius: var(--radius);
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      padding:16px;
-      display:none;
-    }
-
-    .meta{
-      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      font-size:12px;color:var(--muted);
-      margin-bottom:10px;
-    }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
-    a{color:rgba(34,211,238,.9);text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    h2{margin:10px 0 8px;font-size:18px}
-    ul{margin:8px 0 10px;padding-left:20px}
-    li{margin:6px 0;color:rgba(255,255,255,.82)}
-    .tags{color:rgba(255,255,255,.70);font-size:12px}
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-    }
-    .dot{
-      width:7px;height:7px;border-radius:999px;background:rgba(34,211,238,.9);
-      box-shadow: 0 0 14px rgba(34,211,238,.45);
-    }
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ai Summarizer</title>
+  <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
   <div class="wrap">
-    <div class="top">
+    <header class="top">
       <div class="brand">
-        <div class="logo"></div>
+            <img class="logo" src="/static/logo.svg" alt="logo">
         <div>
-          <h1>Mi Summarizer</h1>
-          <p class="sub">URL → смысл. Тёмный минимал, быстрый вывод.</p>
+          <h1>AI Summarizer</h1>
+          <p class="sub">URL → коротко, структурно, читабельно.</p>
         </div>
       </div>
-      <div class="badge">
-        <span class="dot"></span>
-        <span class="mono" id="status">ready</span>
-      </div>
-    </div>
 
-    <div class="panel">
+      <div class="badges">
+        <span class="badge">FastAPI</span>
+        <span class="badge">AI</span>
+
+        <span class="badge badge-status" id="status">
+          <span class="lamp" aria-hidden="true"></span>
+          <span class="status-text">ready</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="card">
       <div class="row">
-        <input id="url" class="input" placeholder="Вставь ссылку: https://..." />
-        <button id="go" class="btn">Сжать</button>
-      </div>
-      <div class="hint">Совет: один и тот же URL второй раз отдаст результат из кэша.</div>
+        <label for="url" class="lbl">Ссылка</label>
 
-      <div id="out" class="out"></div>
-    </div>
+        <div class="input">
+          <input id="url" type="url" placeholder="https://..." autocomplete="off" spellcheck="false"/>
+          <button id="go">Суммаризировать</button>
+        </div>
+
+        <div class="below">
+          <div class="hint">Поддерживает статьи, посты, документацию. Длина ограничена MAX_INPUT_CHARS.</div>
+          <div class="meta" id="meta"></div>
+        </div>
+      </div>
+
+      <div class="out" id="out">
+        <div class="empty">
+          <div class="dot"></div>
+          <div>
+            <div class="empty-title">Результат появится тут</div>
+            <div class="empty-sub">Введи ссылку и нажми кнопку.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <span>© barrtmos</span>
+      <span class="muted"></span>
+    </footer>
   </div>
 
-<script>
-  const out = document.getElementById('out');
-  const statusEl = document.getElementById('status');
-
-  function setStatus(t){ statusEl.textContent = t; }
-
-  document.getElementById('go').onclick = async () => {
-    const url = document.getElementById('url').value.trim();
-    out.style.display = 'block';
-    out.innerHTML = 'Думаю...';
-    setStatus('working');
-
-    try {
-      const r = await fetch('/summarize', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url})
-      });
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.detail || 'Ошибка');
-
-      const s = data.summary || {};
-      const bullets = (s.bullets || []).map(x => `<li>${x}</li>`).join('');
-      const tags = (s.tags || []).map(x => `#${x}`).join(' ');
-
-      const tm = data.timing_ms || {};
-      const timingLine =
-        `всего ${tm.total ?? '-'} ms · парсинг ${tm.parse ?? '-'} ms · AI ${tm.ai ?? '-'} ms` +
-        (data.cache_hit ? ' · cache' : '');
-
-      out.innerHTML = `
-        <div class="meta">
-          <div><b>Источник:</b> <a href="${data.source}" target="_blank">${data.source}</a></div>
-          <div class="mono">${timingLine}</div>
-        </div>
-        <h2>${s.title || 'Без заголовка'}</h2>
-        <ul>${bullets}</ul>
-        <p><b>Вывод:</b> ${s.takeaway || ''}</p>
-        <div class="tags mono">${tags}</div>
-      `;
-      setStatus(data.cache_hit ? 'cache' : 'ready');
-    } catch (e) {
-      out.innerHTML = 'Ошибка: ' + e.message;
-      setStatus('error');
-    }
-  };
-</script>
+  <script src="/static/app.js" defer></script>
 </body>
 </html>
 
