@@ -27,9 +27,11 @@ httplib2==0.31.0
 httptools==0.7.1
 httpx==0.28.1
 idna==3.11
+Jinja2==3.1.6
 jusText==3.0.2
 lxml==6.0.2
 lxml_html_clean==0.4.3
+MarkupSafe==3.0.3
 proto-plus==1.27.0
 protobuf==5.29.5
 pyasn1==0.6.1

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AI Content Summarizer</title>
+  <style>
+    body{font-family:system-ui,Arial;max-width:900px;margin:40px auto;padding:0 16px}
+    input{width:100%;padding:12px;font-size:16px}
+    button{padding:12px 16px;font-size:16px;margin-top:12px;cursor:pointer}
+    .card{border:1px solid #ddd;border-radius:12px;padding:16px;margin-top:16px}
+    ul{margin-top:8px}
+  </style>
+</head>
+<body>
+  <h1>AI Content Summarizer</h1>
+  <p>Вставь ссылку — получишь сжатый смысл.</p>
+
+  <input id="url" placeholder="https://..." />
+  <button id="go">Сжать</button>
+
+  <div id="out" class="card" style="display:none"></div>
+
+<script>
+  const out = document.getElementById('out');
+  document.getElementById('go').onclick = async () => {
+    const url = document.getElementById('url').value.trim();
+    out.style.display = 'block';
+    out.innerHTML = 'Думаю...';
+
+    try {
+      const r = await fetch('/summarize', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({url})
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.detail || 'Ошибка');
+
+      const s = data.summary || {};
+      const bullets = (s.bullets || []).map(x => `<li>${x}</li>`).join('');
+      const tags = (s.tags || []).map(x => `<span>#${x}</span>`).join(' ');
+
+      out.innerHTML = `
+        <div><b>Источник:</b> <a href="${data.source}" target="_blank">${data.source}</a></div>
+        <h2>${s.title || 'Без заголовка'}</h2>
+        <ul>${bullets}</ul>
+        <p><b>Вывод:</b> ${s.takeaway || ''}</p>
+        <p>${tags}</p>
+      `;
+    } catch (e) {
+      out.innerHTML = 'Ошибка: ' + e.message;
+    }
+  };
+</script>
+</body>
+</html>
+

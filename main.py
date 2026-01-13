@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, HttpUrl
 
 from services.ai import ping, list_models, summarize
@@ -9,9 +10,14 @@ from services.parser import parse
 load_dotenv()
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
 class SummarizeIn(BaseModel):
     url: HttpUrl
+
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/health")
 def health():
@@ -44,6 +50,7 @@ def summarize_url(inp: SummarizeIn):
         return {"source": str(inp.url), "chars": len(text), "summary": data}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 
 
